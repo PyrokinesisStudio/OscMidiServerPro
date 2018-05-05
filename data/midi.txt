@@ -1,0 +1,6 @@
+Gervill
+Microsoft MIDI Mapper
+Microsoft GS Wavetable Synth
+Scope PCI MIDI 1
+Scope PCI MIDI 2
+Real Time Sequencer
