@@ -23,6 +23,9 @@ http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%
 Linux-arm6hf
 http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20linux-armv6hf.zip
 
+Full manual is here:
+http://faxinadu.net/purechords/app/pure_chords_osc_midi_pro_manual.pdf
+
 The compiled program doesn't need anything extra. The source code written in Processing 3.3 IDE. The source code ןמ this repository are for v1.0. In order to run the source code in processing you will need the following Java libraries:
 oscP5 https://github.com/sojamo/oscp5
 controlP5 https://github.com/sojamo/controlp5 
