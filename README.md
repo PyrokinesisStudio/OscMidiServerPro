@@ -3,8 +3,6 @@
 
 Pure Chords OSC-MIDI Server Pro lets you easily transform Open Sound Protocol (OSC) messages into MIDI. Control vintage MIDI hardware, VST plugins, DAWs and any other audio application with simple MIDI control change (CC) values. Sixteen instances each listening on a unique OSC address and transmitting values to a unique MIDI channel and CC number. Both incoming OSC and outgoing MIDI is monitored providing quick and intuitive configuration between addresses, ranges and values.
 
-Source code written in Processing 3.3 IDE. The source code and compiled versions on this repository are for v1.0. 
-
 Download latest (1.0) compiled program here:
 
 Win64
@@ -24,6 +22,12 @@ http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%
 
 Linux-arm6hf
 http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20linux-armv6hf.zip
+
+Source code written in Processing 3.3 IDE. The source code and compiled versions on this repository are for v1.0. 
+In order to run the source code you will need the following Java libraries:
+oscP5 https://github.com/sojamo/oscp5
+controlP5 https://github.com/sojamo/controlp5 
+themidibus https://github.com/sparks/themidibus
 
 
 Example Android apps compatible with the server:
