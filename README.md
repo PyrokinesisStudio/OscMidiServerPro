@@ -7,16 +7,26 @@ Source code written in Processing 3.3 IDE. The source code and compiled versions
 
 Download latest (1.0) compiled program here:
 
-Win 64
+Win64
+http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20Win64.zip
 
-Win 32
+Win32
+http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20Win32.zip
 
-Linux
+Linkux64
+http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20linux64.zip
 
-Linux
+Linux32
+http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20linux32.zip
 
-Linux
+Linux-arm64
+http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20linux-arm64.zip
 
+Linux-arm6hf
+http://faxinadu.net/purechords/app/oscmidipro/Pure%20Chords%20OSC-MIDI%20Server%20Pro%20linux-armv6hf.zip
+
+
+Example Android apps compatible with the server:
 
 Pure Chords OSC.Knobs (FREE):
 https://play.google.com/store/apps/details?id=com.purechords.oscknobs
