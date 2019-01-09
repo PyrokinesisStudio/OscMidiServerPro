@@ -2,7 +2,6 @@ import controlP5.*; // import controlP5 library
 import themidibus.*;
 import oscP5.*;
 import netP5.*;
-import java.io.File;
 
 // 
 ControlP5 controlP5; // controlP5 GUI object
@@ -38,11 +37,6 @@ DropdownList midiDevsList;
 Button presetLoadButton;
 Button presetSaveButton;
 
-Button helpLink;
-Button sourceLink;
-Button appsLink;
-Button musicLink;
-
 Button resetAllMsgsButton;
 Button resetAllCcButton;
 
@@ -70,8 +64,6 @@ CheckBox sliderModeGet15;
 CheckBox sliderModeGet16;
 
 // Label
-Textlabel linksLabel;
-
 Textlabel oscMsgDisplay;
 
 Textlabel midiMsgDisplay1;
@@ -148,9 +140,6 @@ Numberbox sliderGetCC16;
 // Text Fields
 
 Textfield portGet;
-
-Textfield maxAll;
-
 Textfield prefixMsgGet;
 
 Textfield sliderMaxGet1;
@@ -260,7 +249,7 @@ int sliderMax14 = 100;
 int sliderMax15 = 100;
 int sliderMax16 = 100;
 
-int portData = 9000;
+int portData;
 
 String oscMsgData;
 
@@ -288,42 +277,16 @@ String savePresetFile;
 
 // Setup
 void setup() {
- size(865,420); // Layout size
- surface.setTitle("Pure Chords - OSC-MIDI Server Pro v1.0"); // Layout title
+ size(950,425); // Layout size
+ surface.setTitle("OS OSC-MIDI Server"); // Layout title
  
  controlP5 = new ControlP5(this); // Initialize GUI class
   midiDevOut = 3;
   midiChan = 1;
-  
- linksLabel = controlP5.addTextlabel("Links")
-   .setPosition(430,10)
-   .setSize(25,20)
-   .setText("Pure Chords OSC-MIDI Server Pro")
-  ;
-  
- helpLink = controlP5.addButton("Help")
-     .setPosition(290,25)
-     .setSize(100,20)
-     ;
-  
- appsLink = controlP5.addButton("Apps")
-     .setPosition(400,25)
-     .setSize(100,20)
-     ;
-     
- sourceLink = controlP5.addButton("Source")
-     .setPosition(510,25)
-     .setSize(100,20)
-     ;
-     
- musicLink = controlP5.addButton("Music")
-     .setPosition(620,25)
-     .setSize(100,20)
-     ;
  
  portGet = controlP5.addTextfield("Port")
-     .setPosition(240,55)
-     .setSize(40,20)
+     .setPosition(270,10)
+     .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
      .setAutoClear(false)
@@ -337,7 +300,7 @@ void setup() {
   ;
   
   prefixMsgGet = controlP5.addTextfield("Prefix")
-     .setPosition(300,55)
+     .setPosition(15,55)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -346,27 +309,27 @@ void setup() {
      ;
   
   presetLoadButton = controlP5.addButton("Load Preset")
-     .setPosition(15,55)
+     .setPosition(490,15)
      .setSize(100,20)
      ;
    
   presetSaveButton = controlP5.addButton("Save Preset")
-     .setPosition(125,55)
+     .setPosition(490,45)
      .setSize(100,20)
      ;
      
   resetAllMsgsButton = controlP5.addButton("Reset Msgs")
-     .setPosition(410,55)
+     .setPosition(600,15)
      .setSize(100,20)
      ;  
      
   resetAllCcButton = controlP5.addButton("Reset CC")
-     .setPosition(520,55)
+     .setPosition(600,45)
      .setSize(100,20)
      ;  
      
   midiChanAll = controlP5.addNumberbox("Chan All")
-     .setPosition(630,55)
+     .setPosition(710,15)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -376,19 +339,9 @@ void setup() {
      ;
      
   modeAll = controlP5.addCheckBox("checkBoxModeAll")
-                .setPosition(660, 55)
+                .setPosition(750, 15)
                 .setSize(15, 15)
                 .addItem("Int32 All", 0)
-                ;
-                
-  maxAll = controlP5.addTextfield("Max All")
-     .setPosition(720,55)
-     .setSize(30,20)
-     .setFocus(true)
-     .setColor(color(255,255,255))
-     .setAutoClear(false)
-     .setText("100")
-     ;
                 ;
   
 // Slider 1 Controls
@@ -946,7 +899,7 @@ void setup() {
 // Slider 9 Controls
 
   sliderMsgGet9 = controlP5.addTextfield("Msg9")
-     .setPosition(430,95)
+     .setPosition(470,95)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -955,13 +908,13 @@ void setup() {
      ;
      
   sliderModeGet9 = controlP5.addCheckBox("checkBoxMode9")
-                .setPosition(535, 95)
+                .setPosition(575, 95)
                 .setSize(15, 15)
                 .addItem("Int32 9", 0)
                 ;
      
    sliderMaxGet9 = controlP5.addTextfield("Max9")
-     .setPosition(590,95)
+     .setPosition(630,95)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -970,7 +923,7 @@ void setup() {
      ;
   
   sliderGetCC9 = controlP5.addNumberbox("CC9")
-     .setPosition(625,95)
+     .setPosition(665,95)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -980,7 +933,7 @@ void setup() {
      ;
      
   midiChanGet9 = controlP5.addNumberbox("Chan9")
-     .setPosition(660,95)
+     .setPosition(710,95)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -992,7 +945,7 @@ void setup() {
  sliderKnobGet9 = controlP5.addKnob("knob9")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,95)
+               .setPosition(740,95)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1001,13 +954,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay9 = controlP5.addTextlabel("OSC InMsg9")
-   .setPosition(720,95)
+   .setPosition(770,95)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay9 = controlP5.addTextlabel("Midi Msg9")
-   .setPosition(720,115)
+   .setPosition(770,115)
    .setSize(25,20)
    .setText("Midi Value:")
   ;      
@@ -1015,7 +968,7 @@ void setup() {
 // Slider 10 Controls
 
   sliderMsgGet10 = controlP5.addTextfield("Msg10")
-     .setPosition(430,135)
+     .setPosition(470,135)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1024,13 +977,13 @@ void setup() {
      ;
      
   sliderModeGet10 = controlP5.addCheckBox("checkBoxMode10")
-                .setPosition(535, 135)
+                .setPosition(575, 135)
                 .setSize(15, 15)
                 .addItem("Int32 10", 0)
                 ;
      
    sliderMaxGet10 = controlP5.addTextfield("Max10")
-     .setPosition(590,135)
+     .setPosition(630,135)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1039,7 +992,7 @@ void setup() {
      ;
   
   sliderGetCC10 = controlP5.addNumberbox("CC10")
-     .setPosition(625,135)
+     .setPosition(665,135)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1049,7 +1002,7 @@ void setup() {
      ;
      
   midiChanGet10 = controlP5.addNumberbox("Chan10")
-     .setPosition(660,135)
+     .setPosition(710,135)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1061,7 +1014,7 @@ void setup() {
  sliderKnobGet10 = controlP5.addKnob("knob10")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,135)
+               .setPosition(740,135)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1070,13 +1023,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay10 = controlP5.addTextlabel("OSC InMsg10")
-   .setPosition(720,135)
+   .setPosition(770,135)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay10 = controlP5.addTextlabel("Midi Msg10")
-   .setPosition(720,155)
+   .setPosition(770,155)
    .setSize(25,20)
    .setText("Midi Value:")
   ;      
@@ -1084,7 +1037,7 @@ void setup() {
 // Slider 11 Controls
 
   sliderMsgGet11 = controlP5.addTextfield("Msg11")
-     .setPosition(430,175)
+     .setPosition(470,175)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1093,13 +1046,13 @@ void setup() {
      ;
      
   sliderModeGet11 = controlP5.addCheckBox("checkBoxMode11")
-                .setPosition(535, 175)
+                .setPosition(575, 175)
                 .setSize(15, 15)
                 .addItem("Int32 11", 0)
                 ;
      
    sliderMaxGet11 = controlP5.addTextfield("Max11")
-     .setPosition(590,175)
+     .setPosition(630,175)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1108,7 +1061,7 @@ void setup() {
      ;
   
   sliderGetCC11 = controlP5.addNumberbox("CC11")
-     .setPosition(625,175)
+     .setPosition(665,175)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1118,7 +1071,7 @@ void setup() {
      ;
      
   midiChanGet11 = controlP5.addNumberbox("Chan11")
-     .setPosition(660,175)
+     .setPosition(710,175)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1130,7 +1083,7 @@ void setup() {
  sliderKnobGet11 = controlP5.addKnob("knob11")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,175)
+               .setPosition(740,175)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1139,13 +1092,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay11 = controlP5.addTextlabel("OSC InMsg11")
-   .setPosition(720,175)
+   .setPosition(770,175)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay11 = controlP5.addTextlabel("Midi Msg11")
-   .setPosition(720,195)
+   .setPosition(770,195)
    .setSize(25,20)
    .setText("Midi Value:")
   ;      
@@ -1153,7 +1106,7 @@ void setup() {
 // Slider 12 Controls
 
   sliderMsgGet12 = controlP5.addTextfield("Msg12")
-     .setPosition(430,215)
+     .setPosition(470,215)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1162,13 +1115,13 @@ void setup() {
      ;
      
   sliderModeGet12 = controlP5.addCheckBox("checkBoxMode12")
-                .setPosition(535, 215)
+                .setPosition(575, 215)
                 .setSize(15, 15)
                 .addItem("Int32 12", 0)
                 ;
      
    sliderMaxGet12 = controlP5.addTextfield("Max12")
-     .setPosition(590,215)
+     .setPosition(630,215)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1177,7 +1130,7 @@ void setup() {
      ;
   
   sliderGetCC12 = controlP5.addNumberbox("CC12")
-     .setPosition(625,215)
+     .setPosition(665,215)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1187,7 +1140,7 @@ void setup() {
      ;
      
   midiChanGet12 = controlP5.addNumberbox("Chan12")
-     .setPosition(660,215)
+     .setPosition(710,215)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1199,7 +1152,7 @@ void setup() {
  sliderKnobGet12 = controlP5.addKnob("knob12")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,215)
+               .setPosition(740,215)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1208,13 +1161,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay12 = controlP5.addTextlabel("OSC InMsg12")
-   .setPosition(720,215)
+   .setPosition(770,215)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay12 = controlP5.addTextlabel("Midi Msg12")
-   .setPosition(720,235)
+   .setPosition(770,235)
    .setSize(25,20)
    .setText("Midi Value:")
   ;      
@@ -1222,7 +1175,7 @@ void setup() {
   // Slider 13 Controls
 
   sliderMsgGet13 = controlP5.addTextfield("Msg13")
-     .setPosition(430,255)
+     .setPosition(470,255)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1231,13 +1184,13 @@ void setup() {
      ;
      
   sliderModeGet13 = controlP5.addCheckBox("checkBoxMode13")
-                .setPosition(535, 255)
+                .setPosition(575, 255)
                 .setSize(15, 15)
                 .addItem("Int32 13", 0)
                 ;
      
    sliderMaxGet13 = controlP5.addTextfield("Max13")
-     .setPosition(590,255)
+     .setPosition(630,255)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1246,7 +1199,7 @@ void setup() {
      ;
  
   sliderGetCC13 = controlP5.addNumberbox("CC13")
-     .setPosition(625,255)
+     .setPosition(665,255)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1256,7 +1209,7 @@ void setup() {
      ;
      
   midiChanGet13 = controlP5.addNumberbox("Chan13")
-     .setPosition(660,255)
+     .setPosition(710,255)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1268,7 +1221,7 @@ void setup() {
  sliderKnobGet13 = controlP5.addKnob("knob13")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,255)
+               .setPosition(740,255)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1277,13 +1230,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay13 = controlP5.addTextlabel("OSC InMsg13")
-   .setPosition(720,255)
+   .setPosition(770,255)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay13 = controlP5.addTextlabel("Midi Msg13")
-   .setPosition(720,275)
+   .setPosition(770,275)
    .setSize(25,20)
    .setText("Midi Value:")
   ;      
@@ -1291,7 +1244,7 @@ void setup() {
 // Slider 14 Controls
 
   sliderMsgGet14 = controlP5.addTextfield("Msg14")
-     .setPosition(430,295)
+     .setPosition(470,295)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1300,13 +1253,13 @@ void setup() {
      ;
      
   sliderModeGet14 = controlP5.addCheckBox("checkBoxMode14")
-                .setPosition(535, 295)
+                .setPosition(575, 295)
                 .setSize(15, 15)
                 .addItem("Int32 14", 0)
                 ;
      
    sliderMaxGet14 = controlP5.addTextfield("Max14")
-     .setPosition(590,295)
+     .setPosition(630,295)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1315,7 +1268,7 @@ void setup() {
      ;
   
   sliderGetCC14 = controlP5.addNumberbox("CC14")
-     .setPosition(625,295)
+     .setPosition(665,295)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1325,7 +1278,7 @@ void setup() {
      ;
      
   midiChanGet14 = controlP5.addNumberbox("Chan14")
-     .setPosition(660,295)
+     .setPosition(710,295)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1337,7 +1290,7 @@ void setup() {
  sliderKnobGet14 = controlP5.addKnob("knob14")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,295)
+               .setPosition(740,295)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1346,13 +1299,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay14 = controlP5.addTextlabel("OSC InMsg14")
-   .setPosition(720,295)
+   .setPosition(770,295)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay14 = controlP5.addTextlabel("Midi Msg14")
-   .setPosition(720,315)
+   .setPosition(770,315)
    .setSize(25,20)
    .setText("Midi Value:")
   ;        
@@ -1360,7 +1313,7 @@ void setup() {
 // Slider 15 Controls
 
   sliderMsgGet15 = controlP5.addTextfield("Msg15")
-     .setPosition(430,335)
+     .setPosition(470,335)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1369,13 +1322,13 @@ void setup() {
      ;
      
   sliderModeGet15 = controlP5.addCheckBox("checkBoxMode15")
-                .setPosition(535, 335)
+                .setPosition(575, 335)
                 .setSize(15, 15)
                 .addItem("Int32 15", 0)
                 ;
      
    sliderMaxGet15 = controlP5.addTextfield("Max15")
-     .setPosition(590,335)
+     .setPosition(630,335)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1384,7 +1337,7 @@ void setup() {
      ;
 
   sliderGetCC15 = controlP5.addNumberbox("CC15")
-     .setPosition(625,335)
+     .setPosition(665,335)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1394,7 +1347,7 @@ void setup() {
      ;
      
   midiChanGet15 = controlP5.addNumberbox("Chan15")
-     .setPosition(660,335)
+     .setPosition(710,335)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1406,7 +1359,7 @@ void setup() {
  sliderKnobGet15 = controlP5.addKnob("knob15")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,335)
+               .setPosition(740,335)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1415,13 +1368,13 @@ void setup() {
                ;   
      
   oscInMsgDisplay15 = controlP5.addTextlabel("OSC InMsg15")
-   .setPosition(720,335)
+   .setPosition(770,335)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay15 = controlP5.addTextlabel("Midi Msg15")
-   .setPosition(720,355)
+   .setPosition(770,355)
    .setSize(25,20)
    .setText("Midi Value:")
   ;      
@@ -1429,7 +1382,7 @@ void setup() {
 // Slider 16 Controls
 
   sliderMsgGet16 = controlP5.addTextfield("Msg16")
-     .setPosition(430,375)
+     .setPosition(470,375)
      .setSize(100,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1438,13 +1391,13 @@ void setup() {
      ;
      
   sliderModeGet16 = controlP5.addCheckBox("checkBoxMode16")
-                .setPosition(535, 375)
+                .setPosition(575, 375)
                 .setSize(15, 15)
                 .addItem("Int32 16", 0)
                 ;
      
    sliderMaxGet16 = controlP5.addTextfield("Max16")
-     .setPosition(590,375)
+     .setPosition(630,375)
      .setSize(30,20)
      .setFocus(true)
      .setColor(color(255,255,255))
@@ -1453,7 +1406,7 @@ void setup() {
      ;
 
   sliderGetCC16 = controlP5.addNumberbox("CC16")
-     .setPosition(625,375)
+     .setPosition(665,375)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1463,7 +1416,7 @@ void setup() {
      ;
      
   midiChanGet16 = controlP5.addNumberbox("Chan16")
-     .setPosition(660,375)
+     .setPosition(710,375)
      .setSize(25,20)
      .setScrollSensitivity(1.1)
      .setDecimalPrecision(0)
@@ -1475,7 +1428,7 @@ void setup() {
  sliderKnobGet16 = controlP5.addKnob("knob16")
                .setRange(0,127)
                .setValue(50)
-               .setPosition(690,375)
+               .setPosition(740,375)
                .setRadius(50)
                .setDragDirection(Knob.HORIZONTAL)
                .setSize(25,25)
@@ -1484,26 +1437,26 @@ void setup() {
                ;   
      
   oscInMsgDisplay16 = controlP5.addTextlabel("OSC InMsg16")
-   .setPosition(720,375)
+   .setPosition(770,375)
    .setSize(25,20)
    .setText("OSC Value:")
   ;
   
   midiMsgDisplay16 = controlP5.addTextlabel("Midi Msg16")
-   .setPosition(720,395)
+   .setPosition(770,395)
    .setSize(25,20)
    .setText("Midi Value:")
   ;        
   
   // Initialize MIDI bus
-  midiDevsList = controlP5.addDropdownList("MIDI Device",55,10,150,120); 
+  midiDevsList = controlP5.addDropdownList("MIDI Device",85,10,150,120); 
   serverPower = controlP5.addCheckBox("checkBox")
-                .setPosition(15, 10)
+                .setPosition(45, 10)
                 .setSize(15, 15)
                 .addItem("On", 0)
                 ;
                 
-  saveStrings("data/midi.txt", MidiBus.availableOutputs());
+  saveStrings("midi.txt", MidiBus.availableOutputs());
   customizeMidi(midiDevsList);
   
   bus = new MidiBus();
@@ -1517,26 +1470,15 @@ void setup() {
   // Background color
   background(40);
   
-  // Pure Chords logo
+  // OS logo
   PImage img;
-  img = loadImage("/data/assets/pclogo.png");
-  img.resize(99, 81);
-  image(img, 755, 5);
+  img = loadImage("/data/assets/web.png");
+  img.resize(100, 69);
+  image(img, 375, 10);
   
-  // Pure Chords icon
-  PImage icon = loadImage("/data/assets/pclogoIcon.png");
+  //  icon
+  PImage icon = loadImage("/data/assets/oss50.bmp");
   surface.setIcon(icon);
-  
-  // Screw gfx
-  img = loadImage("/data/assets/screwSil.png");
-  img.resize(7,7);
-  image(img, 2, 2);
-  
-  image(img, 855, 2);
-  
-  image(img, 2, 410);
-  
-  image(img, 855, 410);
   
     }
  
@@ -1546,33 +1488,13 @@ void customizeMidi(DropdownList ddl) {
   ddl.setItemHeight(20);
   ddl.setBarHeight(15);
   ddl.setOpen(false);
-  ddl.addItems(loadStrings("data/midi.txt"));
+  ddl.addItems(loadStrings("midi.txt"));
   ddl.setColorActive(color(255,128));
 }
 
 // GUI Listeners
 
 void controlEvent(ControlEvent theEvent) {
-
-  // Apps link button listener
-  if (theEvent.isFrom(appsLink)) {
-   link("https://play.google.com/store/apps/dev?id=7246657026449504748");
-  } // end apps link listener
-  
-  // Help link button listener
-  if (theEvent.isFrom(helpLink)) {
-   link("http://faxinadu.net/purechords/app/pure_chords_osc_midi_pro_manual.pdf");
-  } // end help link listener
-  
-  // Source link button listener
-  if (theEvent.isFrom(sourceLink)) {
-   link("https://github.com/faxinadu");
-  } // end source link listener
-  
-  // Music link button listener
-  if (theEvent.isFrom(musicLink)) {
-   link("https://faxinadu.bandcamp.com/");
-  } // end music link listener
   
   // Preset load button listener
   if (theEvent.isFrom(presetLoadButton)) {
@@ -2179,10 +2101,11 @@ void controlEvent(ControlEvent theEvent) {
     bus.clearAll();
   }
     if (serverPower.getState(0) == true) {
+    portData = 9000;
     oscP5 = new OscP5(this, portData);
     bus.addOutput(midiDevOut);
   }
-  } // end power button listener
+  }
   
   // Slider Mode Button 1
    if (theEvent.isFrom(sliderModeGet1)) {
@@ -2358,73 +2281,6 @@ void controlEvent(ControlEvent theEvent) {
    } //end midi device listener
    
    if(theEvent.isAssignableFrom(Textfield.class)) {
-     
-       // Port listener
-       if (theEvent.isFrom(portGet))
-       {
-       portData = Integer.parseInt(portGet.getText());
-          if (serverPower.getState(0) == true) {
-            oscP5.stop();
-            bus.clearAll();
-            oscP5 = new OscP5(this, portData);
-            bus.addOutput(midiDevOut);
-            }
-       } // End port listener
-      
-      // Max all listener
-       if (theEvent.isFrom(maxAll))
-       {
-        int myMax = Integer.parseInt(maxAll.getText());
-       
-        sliderMax1 = myMax;
-        sliderMaxGet1.setValue(maxAll.getText());
-        
-        sliderMax2 = myMax;
-        sliderMaxGet2.setValue(maxAll.getText());
-        
-        sliderMax3 = myMax;
-        sliderMaxGet3.setValue(maxAll.getText());
-        
-        sliderMax4 = myMax;
-        sliderMaxGet4.setValue(maxAll.getText());
-        
-        sliderMax5 = myMax;
-        sliderMaxGet5.setValue(maxAll.getText());
-        
-        sliderMax6 = myMax;
-        sliderMaxGet6.setValue(maxAll.getText());
-        
-        sliderMax7 = myMax;
-        sliderMaxGet7.setValue(maxAll.getText());
-       
-        sliderMax8 = myMax;
-        sliderMaxGet8.setValue(maxAll.getText());
-        
-        sliderMax9 = myMax;
-        sliderMaxGet9.setValue(maxAll.getText());
-        
-        sliderMax10 = myMax;
-        sliderMaxGet10.setValue(maxAll.getText());
-        
-        sliderMax11 = myMax;
-        sliderMaxGet11.setValue(maxAll.getText());
-        
-        sliderMax12 = myMax;
-        sliderMaxGet12.setValue(maxAll.getText());
-        
-        sliderMax13 = myMax;
-        sliderMaxGet13.setValue(maxAll.getText());
-        
-        sliderMax14 = myMax;
-        sliderMaxGet14.setValue(maxAll.getText());
-        
-        sliderMax15 = myMax;
-        sliderMaxGet15.setValue(maxAll.getText());
-        
-        sliderMax16 = myMax;
-        sliderMaxGet16.setValue(maxAll.getText());
-        
-       } // end max all listener
       
        // Msg Prefix Listener
        if (theEvent.isFrom(prefixMsgGet))
@@ -3299,31 +3155,18 @@ void fileSelectedLoad(File selection) {
   } else {
     println("User selected " + selection.getAbsolutePath());
     loadPresetFile = selection.getAbsolutePath();
-
-    String[] m = match(selection.getAbsolutePath(), "purepre");
-    if (m != null)
-    {
     parseFile();
-      }
   }
 } // end loadpreset call method
 
 // save preset method
 void fileSelectedSave(File selection) {
   if (selection == null) {
-                println("Window was closed or the user hit cancel.");
-                } else 
-                {
-                println("User selected " + selection.getAbsolutePath());
-    
-    String[] m = match(selection.getAbsolutePath(), "purepre");
-    if (m == null)
-    {paramsToSaveOutput = createWriter(selection.getAbsolutePath() + ".purepre");}
-    if (m != null)
-    {
-      paramsToSaveOutput = createWriter(selection.getAbsolutePath());
-      }
-    
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+  //  savePresetFile = selection.getAbsolutePath();
+    paramsToSaveOutput = createWriter(selection.getAbsolutePath() + ".faxi");
     paramsToSaveOutput.println(
     prefixMsg + "\t" +      //0
     sliderMsg1 + "\t" +     //1
@@ -3763,166 +3606,11 @@ try {
             }
         }
       
-         sliderMax1 = Integer.parseInt(pieces[33]);
-         sliderMaxGet1.setValue(pieces[33]);
-         
-         sliderMax2 = Integer.parseInt(pieces[34]);
-         sliderMaxGet2.setValue(pieces[34]);
-         
-         sliderMax3 = Integer.parseInt(pieces[35]);
-         sliderMaxGet3.setValue(pieces[35]);
-         
-         sliderMax4 = Integer.parseInt(pieces[36]);
-         sliderMaxGet4.setValue(pieces[36]);
-         
-         sliderMax5 = Integer.parseInt(pieces[37]);
-         sliderMaxGet5.setValue(pieces[37]);
-         
-         sliderMax6 = Integer.parseInt(pieces[38]);
-         sliderMaxGet6.setValue(pieces[38]);
-         
-         sliderMax7 = Integer.parseInt(pieces[39]);
-         sliderMaxGet7.setValue(pieces[39]);
-         
-         sliderMax8 = Integer.parseInt(pieces[40]);
-         sliderMaxGet8.setValue(pieces[40]);
-         
-         sliderMax9 = Integer.parseInt(pieces[41]);
-         sliderMaxGet9.setValue(pieces[41]);
-         
-         sliderMax10 = Integer.parseInt(pieces[42]);
-         sliderMaxGet10.setValue(pieces[42]);
-         
-         sliderMax11 = Integer.parseInt(pieces[43]);
-         sliderMaxGet11.setValue(pieces[43]);
-         
-         sliderMax12 = Integer.parseInt(pieces[44]);
-         sliderMaxGet12.setValue(pieces[44]);
-         
-         sliderMax13 = Integer.parseInt(pieces[45]);
-         sliderMaxGet13.setValue(pieces[45]);
-         
-         sliderMax14 = Integer.parseInt(pieces[46]);
-         sliderMaxGet14.setValue(pieces[46]);
-         
-         sliderMax15 = Integer.parseInt(pieces[47]);
-         sliderMaxGet15.setValue(pieces[47]);
-         
-         sliderMax16 = Integer.parseInt(pieces[48]);
-         sliderMaxGet16.setValue(pieces[48]);
-         
-         sliderCC1 = Integer.parseInt(pieces[49]);
-         sliderGetCC1.setValue(Integer.parseInt(pieces[49]));
-         
-         sliderCC2 = Integer.parseInt(pieces[50]);
-         sliderGetCC2.setValue(Integer.parseInt(pieces[50]));
-         
-         sliderCC3 = Integer.parseInt(pieces[51]);
-         sliderGetCC3.setValue(Integer.parseInt(pieces[51]));
-         
-         sliderCC4 = Integer.parseInt(pieces[52]);
-         sliderGetCC4.setValue(Integer.parseInt(pieces[52]));
-         
-         sliderCC5 = Integer.parseInt(pieces[53]);
-         sliderGetCC5.setValue(Integer.parseInt(pieces[53]));
-         
-         sliderCC6 = Integer.parseInt(pieces[54]);
-         sliderGetCC6.setValue(Integer.parseInt(pieces[54]));
-         
-         sliderCC7 = Integer.parseInt(pieces[55]);
-         sliderGetCC7.setValue(Integer.parseInt(pieces[55]));
-         
-         sliderCC8 = Integer.parseInt(pieces[56]);
-         sliderGetCC8.setValue(Integer.parseInt(pieces[56]));
-         
-         sliderCC9 = Integer.parseInt(pieces[57]);
-         sliderGetCC9.setValue(Integer.parseInt(pieces[57]));
-         
-         sliderCC10 = Integer.parseInt(pieces[58]);
-         sliderGetCC10.setValue(Integer.parseInt(pieces[58]));
-         
-         sliderCC11 = Integer.parseInt(pieces[59]);
-         sliderGetCC11.setValue(Integer.parseInt(pieces[59]));
-         
-         sliderCC12 = Integer.parseInt(pieces[60]);
-         sliderGetCC12.setValue(Integer.parseInt(pieces[60]));
-         
-         sliderCC13 = Integer.parseInt(pieces[61]);
-         sliderGetCC13.setValue(Integer.parseInt(pieces[61]));
-         
-         sliderCC14 = Integer.parseInt(pieces[62]);
-         sliderGetCC14.setValue(Integer.parseInt(pieces[62]));
-         
-         sliderCC15 = Integer.parseInt(pieces[63]);
-         sliderGetCC15.setValue(Integer.parseInt(pieces[63]));
-         
-         sliderCC16 = Integer.parseInt(pieces[64]);
-         sliderGetCC16.setValue(Integer.parseInt(pieces[64]));
-         
-         midiChan1 = Integer.parseInt(pieces[65]);
-         midiChanGet1.setValue(Integer.parseInt(pieces[65]));
-         
-         midiChan2 = Integer.parseInt(pieces[66]);
-         midiChanGet2.setValue(Integer.parseInt(pieces[66]));
-         
-         midiChan3 = Integer.parseInt(pieces[67]);
-         midiChanGet3.setValue(Integer.parseInt(pieces[67]));
-         
-         midiChan4 = Integer.parseInt(pieces[68]);
-         midiChanGet4.setValue(Integer.parseInt(pieces[68]));
-         
-         midiChan5 = Integer.parseInt(pieces[69]);
-         midiChanGet5.setValue(Integer.parseInt(pieces[69]));
-         
-         midiChan6 = Integer.parseInt(pieces[70]);
-         midiChanGet6.setValue(Integer.parseInt(pieces[70]));
-         
-         midiChan7 = Integer.parseInt(pieces[71]);
-         midiChanGet7.setValue(Integer.parseInt(pieces[71]));
-         
-         midiChan8 = Integer.parseInt(pieces[72]);
-         midiChanGet8.setValue(Integer.parseInt(pieces[72]));
-         
-         midiChan9 = Integer.parseInt(pieces[73]);
-         midiChanGet9.setValue(Integer.parseInt(pieces[73]));
-         
-         midiChan10 = Integer.parseInt(pieces[74]);
-         midiChanGet10.setValue(Integer.parseInt(pieces[74]));
-         
-         midiChan11 = Integer.parseInt(pieces[75]);
-         midiChanGet11.setValue(Integer.parseInt(pieces[75]));
-         
-         midiChan12 = Integer.parseInt(pieces[76]);
-         midiChanGet12.setValue(Integer.parseInt(pieces[76]));
-         
-         midiChan13 = Integer.parseInt(pieces[77]);
-         midiChanGet13.setValue(Integer.parseInt(pieces[77]));
-         
-         midiChan14 = Integer.parseInt(pieces[78]);
-         midiChanGet14.setValue(Integer.parseInt(pieces[78]));
-         
-         midiChan15 = Integer.parseInt(pieces[79]);
-         midiChanGet15.setValue(Integer.parseInt(pieces[79]));
-         
-         midiChan16 = Integer.parseInt(pieces[80]);
-         midiChanGet16.setValue(Integer.parseInt(pieces[80]));
       
-         portData = Integer.parseInt(pieces[81]);
-         portGet.setValue(pieces[81]);
-         
-         if (serverPower.getState(0) == true) {
-            oscP5.stop();
-            bus.clearAll();
-            oscP5 = new OscP5(this, portData);
-            bus.addOutput(midiDevOut);
-          }
-      
-    } // end read params
+    } // end read parans
     
     reader.close();
   } catch (IOException e) {
     e.printStackTrace();
   }
 } // end read preset method
-
-// end sketch
